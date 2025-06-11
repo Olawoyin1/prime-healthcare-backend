@@ -11,21 +11,29 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DEBUG = config('DEBUG', cast=bool)
+SECRET_KEY = config('SECRET_KEY')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['pricepersonalhealthcare.onrender.com','localhost', '127.0.0.1'] 
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_$3p*#vp=ai9kz+7-bdaeadm^96!ek!sy%gtj7ob^*1+!^t+1n'
+# Allow all (development only)
+# CORS_ALLOW_ALL_ORIGINS = True
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# OR allow specific frontend (recommended for production)
+CORS_ALLOWED_ORIGINS = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    "https://pricepersonalhealthcare.com",
+    "https://pricepersonalhealthcare.netlify.app",
+]
 
 
 # Application definition
@@ -40,11 +48,13 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'contact',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
